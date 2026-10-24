@@ -56,11 +56,12 @@
         <p>
           A real-time scene with endless terrain, an animated sea and a boat you can sail.
           I built the procedural terrain: heightmaps from layered Simplex noise, the mesh
-          generation, and the shaders that light and colour it. I also wired the terrain
-          into the main loop.
+          generation, the chunk grid that makes the world endless, and the shaders that
+          light and colour it.
         </p>
         <ul class="facts">
-          <li>Chunked terrain streamed around the camera</li>
+          <li>4 × 4 chunk grid that follows the boat and rebuilds only the edge it leaves behind</li>
+          <li>Seamless chunk borders, in both geometry and lighting</li>
           <li>Custom lighting, skybox, fog and depth-of-field post-processing</li>
           <li>Runs on my own math library</li>
         </ul>

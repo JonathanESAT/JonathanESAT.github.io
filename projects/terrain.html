@@ -30,7 +30,8 @@
       </figure>
 
       <h2>What I built</h2>
-      <p class="placeholder">2–3 sentences: heightmap generation, mesh building, the terrain shaders and hooking it into the main loop. Say what you owned and what the team did.</p>
+      <p>Everything on this page is mine: the heightmap generation, the chunk mesh, the chunk grid that makes the world endless, and the terrain shader. I also hooked the grid into the main loop so it follows the boat each frame.</p>
+      <p>My two teammates built the rest of the scene around it.</p>
 
       <h2>How it works</h2>
       <p><strong>Height.</strong> Each vertex samples fractal Simplex noise at its world position: 4 octaves, base frequency 0.02, each octave doubling the frequency and halving the amplitude, scaled by 7 units. Because the input is the world position rather than the chunk-local one, any chunk generated anywhere lands on the same continuous landscape.</p>
@@ -53,7 +54,9 @@ ML::Vec3 n(-dh_dx, 1.0f, -dh_dz);
 n = ML::Vec3Normalize(n);</code></pre>
 
       <h2>Problem I had to solve</h2>
-      <p class="placeholder">One real bug or limit and how you fixed it: seams between chunks, wrong normals, frame drops. Recruiters remember this part.</p>
+      <p>Seams between chunks were the hardest part, and they showed up in two different ways.</p>
+      <p><strong>Cracks in the geometry.</strong> Two neighbouring chunks compute their shared edge separately, so any difference in the heights opens a gap you can see the sky through. I fixed it by caching each chunk's border heights and making new chunks copy their west and north edges from the neighbours, which guarantees identical values. That also forced a build order, north to south and west to east, so the neighbour always exists first.</p>
+      <p><strong>Lines in the lighting.</strong> Even with matching heights, normals averaged from each chunk's own triangles disagree at the border, because each side only sees half the slope. Taking the normal from the noise function itself, instead of the mesh, gives both sides the same answer and the line disappears.</p>
 
       <h2>Numbers</h2>
       <ul class="facts">
@@ -61,10 +64,14 @@ n = ML::Vec3Normalize(n);</code></pre>
         <li>16 chunks visible: 400 × 400 world units, about 131,000 triangles</li>
         <li>4 chunks rebuilt when the boat crosses a chunk border</li>
       </ul>
-      <p class="placeholder">Frame rate on your machine, plus your GPU model.</p>
+      <p>Runs at about 60 FPS (15.8 ms per frame) on an RTX 2070 Super with the full scene: terrain, sea, boat, lights and post-processing.</p>
 
       <h2>What I'd do next</h2>
-      <p class="placeholder">LOD, GPU-side generation, erosion… one or two honest next steps.</p>
+      <ul class="facts">
+        <li>Rebuild recycled chunks on a worker thread, so crossing a border never costs a frame.</li>
+        <li>Lower-detail meshes for distant chunks, which would let the grid grow well past 4 × 4.</li>
+        <li>Move height sampling into the vertex shader and keep one flat grid mesh on the GPU.</li>
+      </ul>
 
       <p class="actions">
         <a class="button quiet" href="mailto:jonathanperis.dev@gmail.com?subject=Code%20access%3A%20terrain%20renderer">Request code access</a>
