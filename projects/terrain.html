@@ -20,7 +20,7 @@
       <h1>Procedural terrain</h1>
       <p class="meta">C++, OpenGL, GLSL. My part of a three-person renderer, 2025/26.</p>
 
-      <p>Endless terrain generated on the fly from layered Simplex noise, built into chunks around the camera and lit by custom shaders.</p>
+      <p>Endless terrain generated on the fly from layered Simplex noise, streamed in chunks around the player's boat and lit by my own shaders.</p>
 
       <figure>
         <div class="video" data-youtube="" data-title="Procedural terrain demo">
@@ -33,15 +33,35 @@
       <p class="placeholder">2–3 sentences: heightmap generation, mesh building, the terrain shaders and hooking it into the main loop. Say what you owned and what the team did.</p>
 
       <h2>How it works</h2>
-      <p class="placeholder">Explain the noise setup (octaves, frequency, amplitude), how a chunk becomes a mesh (vertices, indices, normals), and how the shader colours height and slope.</p>
-      <pre><code>// A short excerpt of YOUR code only (not the school framework), 10–20 lines.
-// For example, the function that turns noise into a height value.</code></pre>
+      <p><strong>Height.</strong> Each vertex samples fractal Simplex noise at its world position: 4 octaves, base frequency 0.02, each octave doubling the frequency and halving the amplitude, scaled by 7 units. Because the input is the world position rather than the chunk-local one, any chunk generated anywhere lands on the same continuous landscape.</p>
+      <p><strong>Mesh.</strong> A chunk is a 64 × 64 grid of cells, 100 units per side. The index buffer depends only on the grid size, so it is built and uploaded once. When a chunk moves, only its vertex buffer is recomputed and re-uploaded into the same GPU buffer, with no reallocation. Each vertex packs position, normal and UV into 8 floats.</p>
+      <p><strong>Normals.</strong> Instead of averaging triangle normals from the mesh, I take the slope of the noise function itself with central differences, one cell apart on each axis. The normal is (−dh/dx, 1, −dh/dz), normalised. A vertex on a chunk's edge gets the same normal as its twin in the next chunk, so lighting has no visible seam.</p>
+      <p><strong>Seams.</strong> Every chunk caches its four border rows of heights. When a chunk is built, it copies its west and north borders from the neighbours that already exist, so edges match exactly, not just within floating-point error.</p>
+      <p><strong>Endless world.</strong> A 4 × 4 grid of chunks follows the boat and keeps it in the two central slots. When the boat crosses into a new chunk, the row or column left behind is moved to the front and regenerated in place. Only those 4 chunks are rebuilt; the other 12 stay untouched.</p>
+      <p><strong>Shading.</strong> The fragment shader picks a colour from the world height and blends between water, sand, grass, forest, rock and snow with smoothstep, so there are no hard bands. On top of that it applies Blinn-Phong lighting from up to 32 directional and spot lights.</p>
+      <pre><code>// Normal from the slope of the noise, not from the mesh,
+// so neighbouring chunks agree on every shared edge.
+float h_l = sn.fractal(octaves_, world_x - eps, world_z) * height_mult_;
+float h_r = sn.fractal(octaves_, world_x + eps, world_z) * height_mult_;
+float h_u = sn.fractal(octaves_, world_x, world_z - eps) * height_mult_;
+float h_d = sn.fractal(octaves_, world_x, world_z + eps) * height_mult_;
+
+float dh_dx = (h_r - h_l) / (2.0f * eps);
+float dh_dz = (h_d - h_u) / (2.0f * eps);
+
+ML::Vec3 n(-dh_dx, 1.0f, -dh_dz);
+n = ML::Vec3Normalize(n);</code></pre>
 
       <h2>Problem I had to solve</h2>
       <p class="placeholder">One real bug or limit and how you fixed it: seams between chunks, wrong normals, frame drops. Recruiters remember this part.</p>
 
       <h2>Numbers</h2>
-      <p class="placeholder">Chunk size, vertices per chunk, view distance, frame time on your machine.</p>
+      <ul class="facts">
+        <li>4,225 vertices and 8,192 triangles per chunk</li>
+        <li>16 chunks visible: 400 × 400 world units, about 131,000 triangles</li>
+        <li>4 chunks rebuilt when the boat crosses a chunk border</li>
+      </ul>
+      <p class="placeholder">Frame rate on your machine, plus your GPU model.</p>
 
       <h2>What I'd do next</h2>
       <p class="placeholder">LOD, GPU-side generation, erosion… one or two honest next steps.</p>
