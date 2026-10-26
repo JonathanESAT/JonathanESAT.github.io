@@ -1,127 +1,16 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jonathan Peris Beltrán — Game Programmer</title>
-  <meta name="description" content="Game programmer working in C++: graphics, engine systems and gameplay AI.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <header class="hero">
-    <!-- Live contour map: a heightmap from layered noise, traced with marching squares (script.js) -->
-    <canvas id="terrain" aria-hidden="true"></canvas>
-
-    <nav class="nav" aria-label="Main">
-      <a href="#work">Work</a>
-      <a href="#now">Now</a>
-      <a href="#about">About</a>
-      <a href="assets/Jonathan_Peris_CV.pdf">CV</a>
-    </nav>
-
-    <div class="hero-text">
-      <h1>Jonathan Peris&nbsp;Beltrán</h1>
-      <p class="lede">Game programmer. I write C++ for graphics, engine systems and gameplay AI.</p>
-      <p class="hero-links">
-        <a href="mailto:jonathanperis.dev@gmail.com">jonathanperis.dev@gmail.com</a>
-        <a href="https://github.com/JonathanESAT">GitHub</a>
-      </p>
-    </div>
-    <p class="map-caption">The lines above are generated live, the same way my terrain system builds its heightmaps.</p>
-  </header>
-
-  <main>
-
-    <!-- FEATURED PROJECT -->
-    <section id="work" class="featured">
-      <div class="video">
-          <video controls muted autoplay loop playsinline preload="metadata" poster="assets/terrain-poster.jpg">
-            <source src="assets/terrain.mp4" type="video/mp4">
-          </video>
-        </div>
-
-      <div class="featured-text">
-        <h2>Procedural open-world renderer</h2>
-        <p class="meta">C++, OpenGL, GLSL. Team of three, 2025/26.</p>
-        <p>
-          A real-time scene with endless terrain, an animated sea and a boat you can sail.
-          I built the procedural terrain: heightmaps from layered Simplex noise, the mesh
-          generation, the chunk grid that makes the world endless, and the shaders that
-          light and colour it.
-        </p>
-        <ul class="facts">
-          <li>4 × 4 chunk grid that follows the boat and rebuilds only the edge it leaves behind</li>
-          <li>Seamless chunk borders, in both geometry and lighting</li>
-          <li>Custom lighting, skybox, fog and depth-of-field post-processing</li>
-          <li>Runs on my own math library</li>
-        </ul>
-        <p class="actions">
-          <a class="button" href="projects/terrain.html">Read how it works</a>
-          <a class="button quiet" href="mailto:jonathanperis.dev@gmail.com?subject=Code%20access%3A%20terrain%20renderer">Request code access</a>
-        </p>
-        <p class="note">The repository is private because it includes ESAT's licensed engine framework. I can grant read access on request.</p>
-      </div>
-    </section>
-
-    <!-- OTHER PROJECTS -->
-    <section class="projects" aria-labelledby="more-work">
-      <h2 id="more-work">More work</h2>
-
-      <article class="project">
-        <h3>Data structures &amp; algorithms library</h3>
-        <p class="meta">C, ported to C++. Team of two, 2025/26.</p>
-        <p>Vector, linked lists, stack and queue over a shared memory node, plus Quicksort. I benchmarked each structure over 10,000+ runs per operation and wrote up why chained vector concatenation came out three times slower than lists.</p>
-        <p class="links"><a href="mailto:jonathanperis.dev@gmail.com?subject=Code%20access%3A%20data%20structures%20library">Request code access</a></p>
-      </article>
-
-      <article class="project">
-        <h3>Math library</h3>
-        <p class="meta">C++, 2025/26.</p>
-        <p>Vectors and matrices from 2D to 4D with inline operations for transforms, covered by its own unit-test project. The renderer above is built on it.</p>
-        <p class="links"><a href="mailto:jonathanperis.dev@gmail.com?subject=Code%20access%3A%20math%20library">Request code access</a></p>
-      </article>
-
-      <article class="project">
-        <h3>Blackjack &amp; Parcheesi</h3>
-        <p class="meta">C++, 2025/26.</p>
-        <p>Both games are built on abstract interfaces, so players are compiled as separate static libraries that can be swapped at link time.</p>
-      </article>
-    </section>
-
-    <!-- CURRENT WORK -->
-    <section id="now" class="now" aria-labelledby="now-title">
-      <h2 id="now-title">What I'm building now</h2>
-      <dl>
-        <dt>Final-year game, Unreal Engine 5</dt>
-        <dd>A top-down puzzle game made in a multidisciplinary team. I own the aiming and weapon components, built so designers can tune them, and I'm moving on to enemy AI.</dd>
-        <dt>Custom engine</dt>
-        <dd>A C++ graphics engine built from scratch with a classmate. I wrote the first render path and the input system.</dd>
-        <dt>Learning home-automation agent</dt>
-        <dd>A reinforcement-learning agent that learns a household's routine and balances comfort against energy use.</dd>
-      </dl>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="about" aria-labelledby="about-title">
-      <h2 id="about-title">About</h2>
-      <p>I'm in my third year of video game programming at ESAT in Valencia. Before that I spent a year building management software in Java and .NET for hospitality businesses, which taught me what it means to ship code that other people rely on every day.</p>
-      <p>I'm most interested in gameplay AI and in the low-level work that makes it fast. I speak Spanish and Catalan natively and English at B2.</p>
-      <p class="actions">
-        <a class="button" href="assets/Jonathan_Peris_CV.pdf">Download CV</a>
-        <a class="button quiet" href="mailto:jonathanperis.dev@gmail.com">Email me</a>
-      </p>
-    </section>
-
-  </main>
-
-  <footer class="footer">
-    <p>Jonathan Peris Beltrán, Valencia.</p>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jonathan Peris Beltrán — Game Programmer</title>
+    <meta name="description" content="Game programmer working in C++: graphics, engine systems and gameplay AI." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
