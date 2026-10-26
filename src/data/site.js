@@ -8,8 +8,7 @@ export const profile = {
   location: 'Valencia, Spain',
   email: 'jonathanperis.dev@gmail.com',
   github: 'https://github.com/JonathanESAT',
-  // Check this matches the URL of your LinkedIn profile.
-  linkedin: 'https://www.linkedin.com/in/jonathan-peris-beltran',
+  linkedin: 'https://www.linkedin.com/in/jonathanperisdev',
   cv: '/Jonathan_Peris_CV.pdf',
 }
 
